@@ -4,6 +4,7 @@ import com.self.todo_app.Entity.User;
 import com.self.todo_app.Exceptions.EmailAlreadyRegisteredException;
 import com.self.todo_app.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public User registerUser(String username, String email, String password){
 
@@ -26,7 +28,7 @@ public class UserService {
 
         user.setEmail(email);
         user.setName(username);
-        user.setPassword(password);
+        user.setPassword(passwordEncoder.encode(password));
 
         return userRepository.save(user) ;
     }
