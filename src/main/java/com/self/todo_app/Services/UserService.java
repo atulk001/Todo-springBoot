@@ -2,7 +2,9 @@ package com.self.todo_app.Services;
 
 import com.self.todo_app.Entity.User;
 import com.self.todo_app.Exceptions.EmailAlreadyRegisteredException;
+import com.self.todo_app.Exceptions.InvalidCredentialException;
 import com.self.todo_app.Repositories.UserRepository;
+import com.self.todo_app.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,28 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(password));
 
         return userRepository.save(user) ;
+    }
+
+    public LoginResponse loginUser(String email, String password){
+        Optional <User> existingUser = userRepository.findByEmail(email);
+
+        if(existingUser.isEmpty()){
+            throw new InvalidCredentialException("User not found");
+
+        }
+
+        User user = existingUser.get();
+
+        boolean passwordMatch= passwordEncoder.matches(password, user.getPassword());
+
+        if(!passwordMatch){
+            throw new InvalidCredentialException("Wrong password");
+        }
+
+        return new LoginResponse("Login Successful");
+
+
+
     }
 
 }

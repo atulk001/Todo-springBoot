@@ -2,6 +2,8 @@ package com.self.todo_app.Controllers;
 
 import com.self.todo_app.Entity.User;
 import com.self.todo_app.Services.UserService;
+import com.self.todo_app.dto.LoginRequest;
+import com.self.todo_app.dto.LoginResponse;
 import com.self.todo_app.dto.RegisterRequest;
 import com.self.todo_app.dto.RegisterResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,17 @@ public class UserController {
         );
 
         return new RegisterResponse(request.email(), request.name());
+
+    }
+
+    @PostMapping("login")
+    public LoginResponse loginUser(@RequestBody LoginRequest request){
+        userService.loginUser(
+                request.email(),
+                request.password()
+        );
+        return new LoginResponse("Login Successful");
+
     }
 
 
