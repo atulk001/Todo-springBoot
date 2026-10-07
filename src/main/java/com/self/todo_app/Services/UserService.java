@@ -4,6 +4,7 @@ import com.self.todo_app.Entity.User;
 import com.self.todo_app.Exceptions.EmailAlreadyRegisteredException;
 import com.self.todo_app.Exceptions.InvalidCredentialException;
 import com.self.todo_app.Repositories.UserRepository;
+import com.self.todo_app.Security.JWTService;
 import com.self.todo_app.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +18,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTService jwtService;
 
     public User registerUser(String username, String email, String password){
 
@@ -51,7 +53,9 @@ public class UserService {
             throw new InvalidCredentialException("Wrong password");
         }
 
-        return new LoginResponse("Login Successful");
+        String token = jwtService.generateToken(email);
+
+        return new LoginResponse(token);
 
 
 

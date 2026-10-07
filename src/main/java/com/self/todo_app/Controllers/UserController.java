@@ -34,11 +34,12 @@ public class UserController {
 
     @PostMapping("login")
     public LoginResponse loginUser(@RequestBody LoginRequest request){
-        userService.loginUser(
+
+        return userService.loginUser(
                 request.email(),
                 request.password()
         );
-        return new LoginResponse("Login Successful");
+
 
     }
 
