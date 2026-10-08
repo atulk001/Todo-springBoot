@@ -30,4 +30,14 @@ public class JWTService {
                 .signWith(getKey())
                 .compact();
     }
+
+    public String extractEmail(String jwt) {
+
+        return Jwts.parser()
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload()
+                .getSubject();
+    }
 }
