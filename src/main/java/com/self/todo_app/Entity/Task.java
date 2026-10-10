@@ -15,11 +15,16 @@ import java.util.UUID;
 @Table(name="tasks")
 public class Task {
 
+
+    @ManyToOne(fetch=FetchType.LAZY,optional = false)
+    @JoinColumn(name="user_id", nullable=false)
+    private User user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name="task_title", nullable=false, unique=true)
+    @Column(name="task_title", nullable=false)
     private String title;
 
     @Column(name="task_description" ,length = 1000)
@@ -42,6 +47,10 @@ public class Task {
         if (createdAt == null) {
             createdAt = Instant.now();
         }
+    }
+
+    @PreUpdate
+    void onUpdate() {
         updatedAt = Instant.now();
     }
 

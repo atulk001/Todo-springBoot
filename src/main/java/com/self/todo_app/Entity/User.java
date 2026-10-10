@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +16,10 @@ import java.util.UUID;
 @Builder
 @Table(name="users")
 public class User {
+
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Task> tasks = new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy= GenerationType.UUID)
@@ -39,8 +45,12 @@ public class User {
         if(createdAt == null){
             createdAt = Instant.now();
         }
-        updatedAt = Instant.now();
 
+    }
+
+    @PreUpdate
+    void onUpdate(){
+        updatedAt = Instant.now();
     }
 
 }
