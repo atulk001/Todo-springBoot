@@ -1,5 +1,7 @@
 package com.self.todo_app.Entity;
 
+import com.self.todo_app.Enums.TaskPriority;
+import com.self.todo_app.Enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,11 +38,13 @@ public class Task {
     @Column(name = "updated_at",nullable = false)
     private Instant updatedAt;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="task_status" )
-    private String status;
+    private TaskStatus status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name="task_priority" )
-    private String priority;
+    private TaskPriority priority;
 
     @PrePersist
     void onCreate() {
