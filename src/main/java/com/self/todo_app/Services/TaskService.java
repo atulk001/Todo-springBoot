@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -65,11 +66,45 @@ public class TaskService {
                 savedTask.getId(),
                 savedTask.getTitle(),
                 savedTask.getDescription(),
-                savedTask.getStatus().name(),
-                savedTask.getPriority().name(),
+                savedTask.getStatus(),
+                savedTask.getPriority(),
                 savedTask.getCreatedAt(),
                 savedTask.getUpdatedAt()
         );
+
+    }
+
+    public List<TaskResponse> fetchAllTasks(){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || !authentication.isAuthenticated() ||
+                authentication instanceof AnonymousAuthenticationToken
+        ){
+            throw new AccessDeniedException("You are not authorized to perform this action.");
+        }
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        List<Task> tasks = taskRepository.findByUserId(user.getId());
+
+        List<TaskResponse> responses = tasks.stream()
+                .map(task -> new TaskResponse(
+                        task.getId(),
+                        task.getTitle(),
+                        task.getDescription(),
+                        task.getStatus(),
+                        task.getPriority(),
+                        task.getCreatedAt(),
+                        task.getUpdatedAt()
+                ))
+                .toList();
+        return responses;
+
+
 
     }
 

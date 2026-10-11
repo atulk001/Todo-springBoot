@@ -45,6 +45,7 @@ public class User {
         if(createdAt == null){
             createdAt = Instant.now();
         }
+        updatedAt = Instant.now();
 
     }
 
