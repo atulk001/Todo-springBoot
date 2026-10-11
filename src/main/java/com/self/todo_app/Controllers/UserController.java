@@ -6,7 +6,10 @@ import com.self.todo_app.dto.LoginRequest;
 import com.self.todo_app.dto.LoginResponse;
 import com.self.todo_app.dto.RegisterRequest;
 import com.self.todo_app.dto.RegisterResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,15 +24,19 @@ public class UserController {
 
 
     @PostMapping("register")
-    public RegisterResponse registerUser(@RequestBody RegisterRequest request){
-         userService.registerUser(
+    public ResponseEntity<RegisterResponse> registerUser(
+            @Valid @RequestBody RegisterRequest request) {
+
+        userService.registerUser(
                 request.name(),
                 request.email(),
                 request.password()
         );
 
-        return new RegisterResponse(request.email(), request.name());
+        RegisterResponse response =
+                new RegisterResponse(request.email(), request.name());
 
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("login")

@@ -7,9 +7,8 @@ import com.self.todo_app.Enums.TaskStatus;
 import com.self.todo_app.Repositories.TaskRepository;
 import com.self.todo_app.Repositories.UserRepository;
 import com.self.todo_app.dto.CreateTaskRequest;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.self.todo_app.dto.TaskResponse;
+import lombok.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,12 +19,14 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Getter
+@Setter
 public class TaskService {
 
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
 
-    public Task createTask(CreateTaskRequest request){
+    public TaskResponse createTask(CreateTaskRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -58,7 +59,17 @@ public class TaskService {
                         : TaskPriority.MEDIUM
         );
         task.setUser(user);
-        return taskRepository.save(task);
+        Task savedTask=taskRepository.save(task);
+
+        return new TaskResponse(
+                savedTask.getId(),
+                savedTask.getTitle(),
+                savedTask.getDescription(),
+                savedTask.getStatus().name(),
+                savedTask.getPriority().name(),
+                savedTask.getCreatedAt(),
+                savedTask.getUpdatedAt()
+        );
 
     }
 
