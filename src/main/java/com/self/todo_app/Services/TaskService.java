@@ -6,6 +6,7 @@ import com.self.todo_app.Enums.TaskPriority;
 import com.self.todo_app.Enums.TaskStatus;
 import com.self.todo_app.Repositories.TaskRepository;
 import com.self.todo_app.Repositories.UserRepository;
+import com.self.todo_app.dto.ApiResponse;
 import com.self.todo_app.dto.CreateTaskRequest;
 import com.self.todo_app.dto.TaskResponse;
 import lombok.*;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -103,10 +105,40 @@ public class TaskService {
                 ))
                 .toList();
         return responses;
+    }
+
+    public ApiResponse deleteTask(UUID taskId){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || !authentication.isAuthenticated() ||
+                authentication instanceof AnonymousAuthenticationToken
+        ){
+            throw new AccessDeniedException("You are not authorized to perform this action.");
+        }
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (!task.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException(
+                    "You are not allowed to delete this task."
+            );
+        }
+        taskRepository.delete(task);
+
+        return new ApiResponse("Task deleted successfully");
 
 
 
     }
+
+
 
 
 }
