@@ -5,6 +5,7 @@ import com.self.todo_app.Services.TaskService;
 import com.self.todo_app.dto.ApiResponse;
 import com.self.todo_app.dto.CreateTaskRequest;
 import com.self.todo_app.dto.TaskResponse;
+import com.self.todo_app.dto.UpdateTaskRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,8 @@ public class TaskController {
         ApiResponse response = taskService.deleteTask(id);
         return ResponseEntity.ok(response);
     }
+
+    
 
 
 }

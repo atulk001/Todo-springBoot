@@ -9,6 +9,7 @@ import com.self.todo_app.Repositories.UserRepository;
 import com.self.todo_app.dto.ApiResponse;
 import com.self.todo_app.dto.CreateTaskRequest;
 import com.self.todo_app.dto.TaskResponse;
+import com.self.todo_app.dto.UpdateTaskRequest;
 import lombok.*;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -133,6 +134,66 @@ public class TaskService {
         taskRepository.delete(task);
 
         return new ApiResponse("Task deleted successfully");
+
+
+
+    }
+
+    public TaskResponse editTask(UUID taskId, UpdateTaskRequest request){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || !authentication.isAuthenticated() ||
+                authentication instanceof AnonymousAuthenticationToken
+        ){
+            throw new AccessDeniedException("You are not authorized to perform this action.");
+        }
+
+
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (!task.getUser().getId().equals(user.getId())) {
+            throw new AccessDeniedException(
+                    "You are not allowed to edit this task."
+            );
+        }
+
+        if (request.title() != null) {
+            task.setTitle(request.title());
+        }
+
+        if (request.description() != null) {
+            task.setDescription(request.description());
+        }
+
+        if (request.taskStatus() != null) {
+            task.setStatus(request.taskStatus());
+        }
+
+        if (request.taskPriority() != null) {
+            task.setPriority(request.taskPriority());
+        }
+
+        Task updatedTask = taskRepository.save(task);
+
+        return new TaskResponse(
+                updatedTask.getId(),
+                updatedTask.getTitle(),
+                updatedTask.getDescription(),
+                updatedTask.getStatus(),
+                updatedTask.getPriority(),
+                updatedTask.getCreatedAt(),
+                updatedTask.getUpdatedAt()
+        );
+
+
+
 
 
 
