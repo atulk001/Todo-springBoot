@@ -2,6 +2,7 @@ package com.self.todo_app.Controllers;
 
 import com.self.todo_app.Entity.Task;
 import com.self.todo_app.Services.TaskService;
+import com.self.todo_app.dto.ApiResponse;
 import com.self.todo_app.dto.CreateTaskRequest;
 import com.self.todo_app.dto.TaskResponse;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/tasks")
@@ -34,6 +36,12 @@ public class TaskController {
         List<TaskResponse> tasks = taskService.fetchAllTasks();
 
         return ResponseEntity.ok(tasks);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse> deleteTask(@PathVariable UUID id) {
+        ApiResponse response = taskService.deleteTask(id);
+        return ResponseEntity.ok(response);
     }
 
 
