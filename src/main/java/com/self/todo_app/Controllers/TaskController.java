@@ -45,7 +45,17 @@ public class TaskController {
         return ResponseEntity.ok(response);
     }
 
-    
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponse> editTask(
+            @PathVariable UUID id,
+            @RequestBody UpdateTaskRequest request) {
+
+        TaskResponse updatedTask = taskService.editTask(id, request);
+
+        return ResponseEntity.ok(updatedTask);
+    }
+
+
 
 
 }
