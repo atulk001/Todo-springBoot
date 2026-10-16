@@ -7,6 +7,7 @@ import {
 import TaskLogo from "../../assets/logo/TaskFlowlogo.png";
 
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 function Navbar() {
     return (
@@ -45,7 +46,9 @@ function Navbar() {
             {/* Authentication Buttons */}
             <div className="flex gap-3">
                 <Button variant="outline">
-                    Login
+                    <Link to="/login">
+                        Login
+                    </Link>
                 </Button>
 
                 <Button>

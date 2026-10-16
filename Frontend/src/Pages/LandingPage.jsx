@@ -18,6 +18,7 @@ const LandingPage = () => {
 
     <Navbar/>
 
+
     <main className="min-h-screen overflow-hidden bg-white text-slate-900">
 
       {/* Hero Section */}
@@ -60,7 +61,7 @@ const LandingPage = () => {
               </a>
 
               <a
-                href="#features"
+                
                 className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 transition hover:border-violet-300 hover:bg-violet-50"
               >
                 Explore Features
