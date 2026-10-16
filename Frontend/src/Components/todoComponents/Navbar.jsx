@@ -45,13 +45,11 @@ function Navbar() {
 
             {/* Authentication Buttons */}
             <div className="flex gap-3">
-                <Button variant="outline">
-                    <Link to="/login">
-                        Login
-                    </Link>
+                <Button variant="outline" render={<Link to="/login" />}>
+                    Login
                 </Button>
 
-                <Button>
+                <Button render={<Link to="/register" />}>
                     Get Started
                 </Button>
             </div>

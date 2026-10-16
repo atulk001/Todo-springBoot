@@ -1,6 +1,8 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import LandingPage from './Pages/LandingPage'
 import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
+import Dashboard from './Pages/Dashboard'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 const App = () => {
   return (
@@ -8,6 +10,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   )

@@ -61,7 +61,7 @@ const LandingPage = () => {
               </a>
 
               <a
-                
+                href="#features"
                 className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3.5 font-semibold text-slate-700 transition hover:border-violet-300 hover:bg-violet-50"
               >
                 Explore Features
@@ -270,7 +270,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white">
+      <footer id="about" className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-7xl flex-col gap-5 px-6 py-8 sm:flex-row sm:items-center sm:justify-between">
           <a href="/" className="flex items-center gap-2">
             <CheckSquare className="h-6 w-6 text-violet-600" />
